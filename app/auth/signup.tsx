@@ -11,26 +11,50 @@ const Signup = () => {
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const { onLogin, onRegister } = useAuth();
-  const router = useRouter()
+  const router = useRouter();
+
   const handleRegister = async () => {
     if (!name || !email || !password) {
-      Alert.alert("Error", "Por favor, rellena todos los campos");
+      Alert.alert("Error", "Please fill in all fields");
       return;
     }
 
     setLoading(true);
     const result = await onRegister?.(name, email, password);
-    console.log("Respuesta del registro:", result);
     setLoading(false);
 
     if (result?.error) {
-      Alert.alert("Error al registrar", result.msg || "Error desconocido");
+      let errorMsg = result.msg || "Unknown error";
+      try {
+        const parsed = JSON.parse(result.msg);
+
+        if (
+          parsed.errors &&
+          Array.isArray(parsed.errors) &&
+          parsed.errors.length > 0
+        ) {
+          // Buscamos errores específicos en password y email
+          const passwordError = parsed.errors.find((e: any) =>
+            e.path?.includes("password")
+          );
+          const emailError = parsed.errors.find((e: any) =>
+            e.path?.includes("email")
+          );
+
+          if (passwordError) {
+            errorMsg = "Password must be at least 8 characters";
+          } else if (emailError) {
+            errorMsg = "Email is not a valid format";
+          } else {
+            errorMsg = parsed.errors[0].message || errorMsg;
+          }
+        }
+      } catch (e) {
+      }
+
+      Alert.alert("Register error", errorMsg);
     } else {
-      Alert.alert(
-        "Éxito",
-        "Usuario creado correctamente. Por favor, inicia sesión."
-      );
- 
+      router.replace("/(tabs)/home")
     }
   };
 
@@ -57,7 +81,7 @@ const Signup = () => {
           secureTextEntry={true}
           onChangeText={setPassword}
         />
-        <Button onPress={handleRegister}>Sign in</Button>
+        <Button onPress={handleRegister}>Sign up</Button>
       </YStack>
       <XStack>
         <Text>Already have an account? </Text>
