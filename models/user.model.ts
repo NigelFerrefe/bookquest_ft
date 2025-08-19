@@ -7,9 +7,9 @@ export const AuthResponseSchema = z.object({
 });
 
 export const RegisterSchema = z.object({
-  name: z.string().min(1, "Name is required"),
+  name: z.string("Name is required").min(1, "Name is required"),
   email: z.email("Email is invalid"),
-  password: z.string("Password is required").min(8, "Password must be at least 8 characters long"),
+  password: z.string("Password is required").min(8, "Password must be at least 8 characters, include one uppercase letter and one number"),
 });
 
 export const LoginSchema = z.object({

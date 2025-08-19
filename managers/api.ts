@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import Constants from "expo-constants";
+import * as SecureStore from "expo-secure-store";
 
 export class CustomError extends Error {
   errorCode: number;
@@ -31,12 +32,11 @@ interface ApiResponsePagination<T, P> {
   pagination?: P;
 }
 
-export const API_URL =
-  process.env.API_URL || "https://bookquest-bk.vercel.app/";
+const apiUrl = Constants.expoConfig?.extra?.API_URL;
 
 // Create an instance of axios
 const api = axios.create({
-  baseURL:  API_URL,
+  baseURL: apiUrl,
   headers: {
     "Content-Type": "application/json",
     "X-App-version": Constants.expoConfig?.version || "debug",
@@ -114,24 +114,12 @@ export const post = async <T>(
       throw handleCustomErrors(data.error);
     }
 
+    //Retun axios data
     return data as T;
   } catch (error) {
-  if (axios.isAxiosError(error)) {
-    if (error.response) {
-      console.error("[Api:post] Backend error", error.response.data);
-      const backendMsg = error.response.data.message || JSON.stringify(error.response.data);
-      throw new CustomError(error.response.status, backendMsg);
-    } else if (error.request) {
-      console.error("[Api:post] No response from server");
-      throw new CustomError(0, "Could not connect to server");
-    } else {
-      console.error("[Api:post] Error", error.message);
-      throw new CustomError(0, error.message);
-    }
+    console.error("[Api:post] error", error);
+    throw error;
   }
-  throw error; 
-}
-
 };
 
 // PUT
@@ -222,25 +210,21 @@ const handleCustomErrors = (error: CustomError) => {
 };
 
 // Method to set the bearer token
-export const setBearerToken = (token: string) => {
+export const setBearerToken = (token: string | null) => {
   console.log("[Api:setBearerToken] setting token", token);
   api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 };
 
-// Add a request interceptor
+// Request interceptor
 api.interceptors.request.use(
   (config) => {
     console.log(
       "[ApiService:request] ------->",
       config.method?.toUpperCase() + " " + config.baseURL + (config.url ?? "")
     );
-    //console.log(config.headers);
-    /*
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`;
-    }
-    */
+    console.log(config.headers);
+
+    // El token ya está en memoria, gracias a setBearerToken
     return config;
   },
   (error: AxiosError) => {
@@ -251,34 +235,26 @@ api.interceptors.request.use(
       error.code,
       error.message
     );
-
-    //NO throw Error??
-    return handleAPIErrors(error);
+    return Promise.reject(error); // dejamos que el error se propague
   }
 );
-
-// Add a response interceptor
+// Interceptor de response
 api.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
-    console.error(
-      "[ApiService:response] error",
-      error.response?.status,
-      error.response?.data,
-      error.code,
-      error.message
-    );
-
-    //NO throw Error??
-    return handleAPIErrors(error);
+    console.error("[ApiService:response] error", error.response?.status, error.response?.data);
+    return Promise.reject(error); // siempre rechazar
   }
 );
 
 const handleAPIErrors = (error: AxiosError) => {
   console.error("[Api:handleAPIErrors] error", error);
   switch (error.response?.status) {
-
+    case 401:
+      //emitGlobalEvent(GlobalEvents.SHOW_GENERIC_ERROR_MODAL, error);
+      return Promise.reject(error);
     case 402:
+      //TODO Fer un dialog normal  que digui hazte premium i al clicar executi el bottomsheet?
       //emitGlobalEvent(GlobalEvents.SHOW_SUBSCRIPTION_MODAL);
       return Promise.reject(error);
     case 403:

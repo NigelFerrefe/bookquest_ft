@@ -5,12 +5,12 @@ export const useAuthService = () => {
   const register = async (
     registerData: Register
   ): Promise<AuthResponseModel> => {
-    const auth = await post<AuthResponseModel>("/auth/signup", registerData);
+    const auth = await post<AuthResponseModel>("auth/signup", registerData);
     return AuthResponseModel.fromApi(auth);
   };
 
   const login = async (loginData: Login): Promise<AuthResponseModel> => {
-    const auth = await post<AuthResponseModel>("/auth/login", loginData);
+    const auth = await post<AuthResponseModel>("auth/login", loginData);
     return AuthResponseModel.fromApi(auth);
   };
 
