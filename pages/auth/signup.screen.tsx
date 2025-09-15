@@ -6,7 +6,7 @@ import { Link, useRouter } from "expo-router";
 import { RegisterSchema, Register } from "@/models/user.model";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormTextInput } from "@/components/formInputs/textInput";
+import { FormInput } from "@/components/formInputs/textInput";
 
 const SignupScreen = () => {
   const { onRegister } = useAuth();
@@ -36,7 +36,7 @@ const SignupScreen = () => {
       Alert.alert("Registration failed", result.msg);
       console.error("Registration error:", result.msg);
     } else {
-      router.replace("/(tabs)/home");
+      router.replace("/(pages)/(tabs)/home");
     }
   };
 
@@ -60,21 +60,21 @@ const SignupScreen = () => {
         </YStack>
 
         <YStack gap={20}>
-          <FormTextInput
+          <FormInput
             control={control}
             errors={errors}
             name="name"
             placeholder="Name..."
             autoCapitalize="words"
           />
-          <FormTextInput
+          <FormInput
             control={control}
             errors={errors}
             name="email"
             placeholder="Email..."
-            keyboardType="email-address"
+            type="email"
           />
-          <FormTextInput
+          <FormInput
             control={control}
             errors={errors}
             name="password"

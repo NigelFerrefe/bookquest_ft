@@ -61,7 +61,7 @@ export const useGenreService = () => {
 
   const updateGenre = async (
     genreId: string,
-    postData: string
+    postData: NewGenre
   ): Promise<Genre> => {
     try {
       const response = await put<Genre>(`api/genre/${genreId}`, postData);

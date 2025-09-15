@@ -1,7 +1,6 @@
 import { Genre, NewGenre, DeletedGenre } from "@/models/genre.model";
 import { Books } from "@/models/book.model";
 import { InfiniteScrollPagination } from "@/models/pagination.model";
-import { useAuthorService } from "@/services/author.service";
 import {
   useInfiniteQuery,
   useMutation,
@@ -108,3 +107,139 @@ export const useBooksFromGenre = ({
     hasNextPage,
   };
 };
+
+export const useCreateGenre = () => {
+  const {createGenre} = useGenreService()
+  const queryClient = useQueryClient();
+
+  return useMutation<Genre, Error, NewGenre, { previousGenres?: Genre[] }>({
+    mutationFn: (newGenre) => createGenre(newGenre),
+    // Optimistic update
+    onMutate: async (newGenre) => {
+      // Cancel any outgoing refetch for this query to avoid overwriting our optimistic update
+      await queryClient.cancelQueries({ queryKey: ["Genre"] });
+
+      // Snapshot the current list of genres
+      const previousGenres = queryClient.getQueryData<Genre[]>(["Genre"]);
+
+      // Optimistically update the cache with the new genre
+      queryClient.setQueryData<Genre[]>(["Genre"], (old = []) => [
+        ...old,
+        {
+          _id: "temp-id",
+          name: newGenre.name,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          __v: 0,
+        }, // Temporary Genre object until server responds
+      ]);
+
+      // Return context so we can rollback if mutation fails
+      return { previousGenres: previousGenres };
+    },
+
+    // On error, rollback to the previous cache state
+    onError: (err, newGenre, context) => {
+      if (context?.previousGenres) {
+        queryClient.setQueryData(["Genre"], context.previousGenres);
+      }
+    },
+
+    // On success, replace the optimistic genre with the server's response
+    onSuccess: (savedGenre) => {
+      queryClient.setQueryData<Genre[]>(["Genre"], (old = []) =>
+        old.map((genre) => (genre._id === "temp-id" ? savedGenre : genre))
+      );
+    },
+
+    // Optional: ensure final sync with server
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["Genre"] });
+    },
+  });
+};
+
+export const useUpdateGenre = () => {
+  const {updateGenre} = useGenreService();
+    const queryClient = useQueryClient();
+  
+    return useMutation<
+      Genre,
+      Error,
+      { genreId: string; data: NewGenre },
+      { previousGenres?: Genre[] }
+    >({
+      mutationFn: ({ genreId, data }) => updateGenre(genreId, data),
+  
+      onMutate: async ({ genreId, data }) => {
+        await queryClient.cancelQueries({ queryKey: ["Genre"] });
+  
+        const previousGenres = queryClient.getQueryData<Genre[]>(["Genre"]);
+  
+        // Optimistically update the specific genre
+        queryClient.setQueryData<Genre[]>(["Genre"], (old = []) =>
+          old.map((genre) =>
+            genre._id === genreId
+              ? {
+                  ...genre,
+                  ...data,
+                  updatedAt: new Date().toISOString(),
+                }
+              : genre
+          )
+        );
+  
+        return { previousGenres: previousGenres };
+      },
+  
+      onError: (err, variables, context) => {
+        if (context?.previousGenres) {
+          queryClient.setQueryData(["Genre"], context.previousGenres);
+        }
+      },
+  
+      onSuccess: (updatedGenre) => {
+        queryClient.setQueryData<Genre[]>(["Genre"], (old = []) =>
+          old.map((genre) =>
+            genre._id === updatedGenre._id ? updatedGenre : genre
+          )
+        );
+      },
+  
+      onSettled: () => {
+        queryClient.invalidateQueries({ queryKey: ["Genre"] });
+      },
+    });
+}
+
+export const useDeleteGenre = () => {
+  const { deleteGenre} = useGenreService();
+    const queryClient = useQueryClient();
+  
+    return useMutation<DeletedGenre, Error, string, { previousGenres?: Genre[] }>({
+      mutationFn: (genreId) => deleteGenre(genreId),
+      onMutate: async (genreId) => {
+        // Cancel any ongoing queries for the genre list
+        await queryClient.cancelQueries({ queryKey: ["Genre"] });
+  
+        const previousGenres = queryClient.getQueryData<Genre[]>(["Genre"]);
+  
+        // Optimistically remove the genre from the cache
+        queryClient.setQueryData<Genre[]>(["Genre"], (old = []) =>
+          old.filter((genre) => genre._id !== genreId)
+        );
+  
+        return { previousGenres };
+      },
+  
+      onError: (err, genreId, context) => {
+        if (context?.previousGenres) {
+          queryClient.setQueryData(["Genre"], context.previousGenres);
+        }
+      },
+  
+      onSettled: () => {
+        queryClient.invalidateQueries({ queryKey: ["Genre"] });
+      },
+    });
+}

@@ -12,7 +12,6 @@ export const useAuthorService = () => {
     search: string;
     pageParam?: string;
   }): Promise<{ authors: Author[]; pagination: InfiniteScrollPagination }> => {
-    console.log("Llamando a /api/author con headers:", axios.defaults.headers.common);
     const { data: authors, pagination } = await getPagination<
       Author[],
       InfiniteScrollPagination
@@ -58,20 +57,20 @@ export const useAuthorService = () => {
       return response;
     } catch (error) {
       console.error("Error creating author:", error);
-      throw new Error();
+      throw error;
     }
   };
 
-    const updateAuthor = async (
-        authorId: string,
-        postData: NewAuthor
-    ): Promise<Author> => {
+  const updateAuthor = async (
+    authorId: string,
+    postData: NewAuthor
+  ): Promise<Author> => {
     try {
       const response = await put<Author>(`api/author/${authorId}`, postData);
       return response;
     } catch (error) {
       console.error("Error updating author:", error);
-      throw new Error();
+      throw error;
     }
   };
 
@@ -81,7 +80,7 @@ export const useAuthorService = () => {
       return response;
     } catch (error) {
       console.error("Error deleting author:", error);
-      throw new Error();
+      throw error;
     }
   };
 

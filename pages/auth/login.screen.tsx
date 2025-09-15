@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema, Login } from "@/models/user.model";
 import axios from "axios";
-import { FormTextInput } from "@/components/formInputs/textInput";
+import { FormInput } from "@/components/formInputs/textInput";
 
 const LoginScreen = () => {
   const { onLogin } = useAuth();
@@ -43,13 +43,9 @@ const LoginScreen = () => {
       return;
     }
 
-    // 🔹 Confirmar que Axios ya tiene el header puesto antes de navegar
-    console.log(
-      "Axios header justo antes de navegar:",
-      axios.defaults.headers.common["Authorization"]
-    );
 
-    router.replace("/(tabs)/home");
+
+    router.replace("/(pages)/(tabs)/home");
   };
 
   return (
@@ -72,14 +68,14 @@ const LoginScreen = () => {
         </YStack>
 
         <YStack gap={20}>
-          <FormTextInput
+          <FormInput
             control={control}
             errors={errors}
             name="email"
             placeholder="Email..."
-            keyboardType="email-address"
+            type="email"
           />
-          <FormTextInput
+          <FormInput
             control={control}
             errors={errors}
             name="password"

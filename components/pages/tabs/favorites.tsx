@@ -40,7 +40,7 @@ const Favorites = () => {
           textAlign: "center",
         }}
       >
-        Library
+        Favorites
       </AlmendraText>
       <YStack paddingHorizontal={20}>
         <SearchBar

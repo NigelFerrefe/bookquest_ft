@@ -9,6 +9,7 @@ import {
 } from "@tamagui/lucide-icons";
 import { TabBarButton } from "@/components/ui/tabBarButton";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Colors } from "@/theme-config/colors";
 
 export default function TabLayout() {
   return (
@@ -16,19 +17,19 @@ export default function TabLayout() {
       screenOptions={{
         headerShown: false,
         tabBarHideOnKeyboard: true,
-        tabBarActiveTintColor: "#000",
-        tabBarInactiveTintColor: "#00000099",
+        tabBarActiveTintColor: Colors.activeTintColor,
+        tabBarInactiveTintColor: Colors.inactiveTintColor,
         tabBarButton: (props) => <TabBarButton {...props} />,
         tabBarStyle: Platform.select({
           ios: {
             position: "absolute",
-            backgroundColor: "#faebe0ff",
+            backgroundColor: Colors.background,
             borderTopWidth: 0,
             height: 70,
             paddingTop: 10,
           },
           default: {
-            backgroundColor: "#faebe0ff",
+            backgroundColor: Colors.background,
             height: 70,
             paddingTop: 10,
             borderTopWidth: 0,
@@ -36,42 +37,42 @@ export default function TabLayout() {
           },
         }),
         sceneStyle: {
-          backgroundColor: "#faebe0ff",
+          backgroundColor: Colors.background,
         },
       }}
     >
       <Tabs.Screen
         name="home"
         options={{
-          title: "Home",
+          title: "",
           tabBarIcon: ({ color }) => <Home size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="wishlist"
         options={{
-          title: "Wishlist",
+          title: "",
           tabBarIcon: ({ color }) => <ShoppingBag size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="library"
         options={{
-          title: "Library",
+          title: "",
           tabBarIcon: ({ color }) => <LibraryBig size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="favorites"
         options={{
-          title: "Favorites",
+          title: "",
           tabBarIcon: ({ color }) => <Heart size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="search"
         options={{
-          title: "Search",
+          title: "",
           tabBarIcon: ({ color }) => <Search size={24} color={color} />,
         }}
       />

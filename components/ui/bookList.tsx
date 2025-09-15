@@ -5,7 +5,8 @@ import { Books } from "@/models/book.model";
 import ChipItem from "@/components/ui/chip";
 import Card from "@/components/ui/card";
 import Button from "@/theme-config/custom-components";
-import { Text as AlmendraText } from "react-native";
+import { Text as AlmendraText, Pressable } from "react-native";
+import { useRouter } from "expo-router";
 
 type BooksListScreenProps = {
   data: Books[];
@@ -29,27 +30,40 @@ const BooksListScreen = ({
   hasNextPage,
 }: BooksListScreenProps) => {
   const renderItem = ({ item }: { item: Books }) => {
+    const router = useRouter();
+      const bookPlaceholder = require('@/assets/images/BookPlaceholder.png')
+
     return (
       <YStack ai="center">
         <Card>
-          <Card.Header>
-            <AlmendraText
-              style={{
-                fontFamily: "Almendra",
-                fontSize: 36,
-                textAlign: "center",
-                fontStyle: "italic",
-                color: "#2E3B76",
-              }}
-            >
-              {item.title}
-            </AlmendraText>
-            <Text fontSize={18}>{item?.author.name}</Text>
-          </Card.Header>
-
+          <Pressable
+            onPress={() => {
+              router.navigate({
+                pathname: "/(pages)/book/main/[id]",
+                params: {
+                  id: item._id,
+                },
+              });
+            }}
+          >
+            <Card.Header>
+              <AlmendraText
+                style={{
+                  fontFamily: "Almendra",
+                  fontSize: 36,
+                  textAlign: "center",
+                  fontStyle: "italic",
+                  color: "#2E3B76",
+                }}
+              >
+                {item.title}
+              </AlmendraText>
+              <Text fontSize={18}>{item?.author.name}</Text>
+            </Card.Header>
+          </Pressable>
           <Card.Body>
             <Image
-              source={item.imageUrl ? { uri: item.imageUrl } : undefined}
+              source={item.imageUrl ? { uri: item.imageUrl } : bookPlaceholder}
               w={280}
               h={300}
               objectFit="contain"

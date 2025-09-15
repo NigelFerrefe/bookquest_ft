@@ -1,10 +1,13 @@
 import { ImageBackground } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { YStack, Text } from "tamagui";
 import Button from "@/theme-config/custom-components";
 import { Text as AlmendraText } from "react-native";
+import NewAuthor from "@/components/ui/authorModal";
+import { useRouter } from "expo-router";
 
 const HeroImage = () => {
+  const router = useRouter();
   return (
     <YStack gap={20} alignItems="center">
       <AlmendraText
@@ -37,6 +40,7 @@ const HeroImage = () => {
           pressStyle={{
             backgroundColor: "#34281eff",
           }}
+          onPress={() => router.navigate("/(pages)/book/main/newBook")}
         >
           Add book
         </Button>

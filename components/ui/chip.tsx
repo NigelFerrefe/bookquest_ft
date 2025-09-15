@@ -60,16 +60,20 @@ const ChipItem = ({
         {...style}
       >
         {icon}
-        <YStack gap={5} minWidth={40}>
-          <Text fontSize={fontSize} color={textColor}>
-            {label}
-          </Text>
-          {time && (
+        {time ? (
+          <YStack gap={5} minWidth={40}>
+            <Text fontSize={fontSize} color={textColor}>
+              {label}
+            </Text>
             <Text fontSize={8} color={textColor}>
               {time}
             </Text>
-          )}
-        </YStack>
+          </YStack>
+        ) : (
+          <Text fontSize={fontSize} color={textColor} textAlign="center">
+            {label}
+          </Text>
+        )}
         {children}
       </XStack>
     </Theme>

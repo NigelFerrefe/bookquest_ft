@@ -211,18 +211,18 @@ const handleCustomErrors = (error: CustomError) => {
 
 // Method to set the bearer token
 export const setBearerToken = (token: string | null) => {
-  console.log("[Api:setBearerToken] setting token", token);
+  //console.log("[Api:setBearerToken] setting token", token);
   api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 };
 
 // Request interceptor
 api.interceptors.request.use(
   (config) => {
-    console.log(
+   /*  console.log(
       "[ApiService:request] ------->",
       config.method?.toUpperCase() + " " + config.baseURL + (config.url ?? "")
-    );
-    console.log(config.headers);
+    ); */
+    //console.log(config.headers);
 
     // El token ya está en memoria, gracias a setBearerToken
     return config;
