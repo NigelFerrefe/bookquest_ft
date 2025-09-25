@@ -1,16 +1,28 @@
 import { YStack } from "tamagui";
 import { ChevronRight } from "@tamagui/lucide-icons";
 import { EditFieldChipItem } from "@/components/ui/editFieldChip";
+import { useState } from "react";
+import { CostModal } from "@/components/pages/book/edit/costModal";
 
-const EditCostScreen = ({ price }: { price: number }) => {
+const EditCostScreen = ({ price, id }: { price: number; id: string }) => {
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+
   return (
     <YStack>
-      <EditFieldChipItem 
-      onPress= {() => console.log('open modal')}
-      label='Author'
-      value={`${price} €`}
-      icon={<ChevronRight />}
+      <EditFieldChipItem
+        onPress={() => setModalVisible(true)}
+        label="Cost"
+        value={`${price} €`}
+        icon={<ChevronRight />}
       />
+      {modalVisible && (
+        <CostModal
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+          bookId={id}
+          initialPrice={price}
+        />
+      )}
     </YStack>
   );
 };

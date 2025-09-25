@@ -6,6 +6,9 @@ import { useForm } from "react-hook-form";
 import { useCreateAuthor } from "@/hooks/useAuthorPage";
 import { Author, NewAuthor } from "@/models/author.model";
 import AuthorDialog from "@/components/ui/authorDialog";
+import { Colors } from "@/theme-config/colors";
+import { Trash2 } from "@tamagui/lucide-icons";
+import { Pressable } from "react-native";
 
 type FormValues = {
   authorName: string;
@@ -56,7 +59,7 @@ const AuthorForm = ({ author, setAuthor }: AuthorFormProps) => {
         </XStack>
         <YStack
           borderWidth={1}
-          borderColor={author ? "#2E3B76" : "#ccc"}
+          borderColor={author ? Colors.primaryButton : Colors.inactiveTintColor}
           paddingHorizontal={10}
           paddingVertical={12}
           borderRadius={5}
@@ -69,23 +72,27 @@ const AuthorForm = ({ author, setAuthor }: AuthorFormProps) => {
         </YStack>
       </XStack>
 
-      <XStack gap={10} paddingHorizontal={20} jc="space-between" ai="center">
+      <XStack  gap={20} justifyContent="center" ai='center'>
         <Button
           onPress={() => setShowAuthorDialog(true)}
-          backgroundColor="green"
+          backgroundColor={Colors.secondaryButton}
+          borderColor={Colors.primaryButton}
+          size={"$sm"}
         >
           New author
         </Button>
-        <Button onPress={() => setShowAuthorModal(true)} backgroundColor="red">
+        <Button
+          onPress={() => setShowAuthorModal(true)}
+          backgroundColor={Colors.secondaryButton}
+          borderColor={Colors.primaryButton}
+          size={"$sm"}
+        >
           Select from list
         </Button>
         {author && (
-          <Button
-            backgroundColor="#666" 
-            onPress={() => setAuthor(null)}
-          >
-            Clear
-          </Button>
+          <Pressable onPress={() => setAuthor(null)}>
+            <Trash2 color={Colors.danger}/>
+          </Pressable>
         )}
       </XStack>
       {showAuthorDialog && (

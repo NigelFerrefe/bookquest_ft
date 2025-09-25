@@ -3,7 +3,7 @@ import SignupScreen from "@/pages/auth/signup.screen";
 
 const Page = () => {
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#faebe0ff" }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <SignupScreen />
     </SafeAreaView>
   );

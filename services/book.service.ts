@@ -19,7 +19,6 @@ export const useBookService = () => {
     return book;
   };
 
-
   const createBook = async (postData: FormData): Promise<Books> => {
     try {
       const response = await post<Books>("api/book", postData, {
@@ -32,7 +31,10 @@ export const useBookService = () => {
     }
   };
 
-  const updateBook = async (bookId: string, postData: FormData): Promise<Books> => {
+  const updateBook = async (
+    bookId: string,
+    postData: FormData
+  ): Promise<Books> => {
     try {
       const response = await put<Books>(`api/book/${bookId}`, postData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -54,12 +56,34 @@ export const useBookService = () => {
     }
   };
 
+const updateBookCover = async (
+  bookId: string,
+  image: { fileURL: string; path: string }
+): Promise<Books> => {
+  if (image.fileURL.startsWith("http")) {
+    throw new Error("Selecciona una imagen desde tu dispositivo, no una URL remota");
+  }
+
+  const formData = new FormData();
+  formData.append("imageUrl", {
+    uri: image.fileURL,
+    type: "image/jpeg",
+    name: image.path.split("/").pop() || "book.jpg",
+  } as any);
+
+  const response = await put<Books>(`api/book/${bookId}`, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+
+  return response;
+};
+
+
   return {
     getBookDetails,
     createBook,
     updateBook,
     deleteBook,
+    updateBookCover,
   };
 };
-
-

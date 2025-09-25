@@ -1,7 +1,10 @@
 export const Colors = {
-    background: '#faebe0ff',
-    activeTintColor: '#1F1D1F',
-    inactiveTintColor: '#1f1d1f81',
-    primaryButton: '#2E3B76',
-    secondaryButton: '#faebe0ff',
+    background: '#e8e8e8ff',
+    activeTintColor: '#fef2b6ff',
+    inactiveTintColor: '#8f8d8dff',
+    primaryButton: '#0d0545ff',
+    secondaryButton: '#f7edbdff',
+    danger: '#5e0303ff',
+    fontColor: '#fff',
+    accent: '#008BBE'
 }

@@ -47,8 +47,8 @@ const SearchBar = ({
         borderWidth={0}
         flex={1}
         color="black"
-        marginLeft={8}
-        height={40}
+        paddingHorizontal={15}
+        fontSize={16}
       />
 
       {/* Search tag */}

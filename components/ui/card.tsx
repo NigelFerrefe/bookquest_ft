@@ -1,6 +1,5 @@
-import React from "react";
 import { YStack, YStackProps } from "tamagui";
-
+import { Colors } from "@/theme-config/colors";
 
 type CardProps = YStackProps & {
   children: React.ReactNode;
@@ -12,13 +11,15 @@ type CardSectionProps = YStackProps & {
 const Card = ({ children, ...props }: CardProps) => {
   return (
     <YStack
-      w={320}
-      backgroundColor="#fff"
-      borderWidth={2}
-      borderColor="#008BBE"
-      mb="$6"
-      br={5}
-      {...props} 
+      mb="$3"
+      br={10}
+      backgroundColor={Colors.activeTintColor}
+      shadowColor="#000"
+      shadowOffset={{ width: 0, height: 7 }}
+      shadowOpacity={0.45}
+      shadowRadius={10}
+      elevation={15}
+      {...props}
     >
       {children}
     </YStack>
@@ -26,26 +27,13 @@ const Card = ({ children, ...props }: CardProps) => {
 };
 
 const CardHeader = ({ children, ...props }: CardSectionProps) => (
-  <YStack
-    w="100%"
-    h={140}
-    borderBottomWidth={2}
-    borderColor="#008BBE"
-    jc="center"
-    ai="center"
-    {...props}  
-  >
+  <YStack paddingBottom={10} paddingTop={20} gap={10} {...props}>
     {children}
   </YStack>
 );
 
 const CardBody = ({ children, ...props }: CardSectionProps) => (
-  <YStack
-    ai="center"
-    backgroundColor="#faebe0ff"
-    paddingTop={20}
-    {...props} 
-  >
+  <YStack paddingBottom={20} {...props}>
     {children}
   </YStack>
 );

@@ -7,6 +7,12 @@ import { useGenreHook } from "@/hooks/useGenrePage";
 import { Genre } from "@/models/genre.model";
 import Button from "@/theme-config/custom-components";
 import { Colors } from "@/theme-config/colors";
+import {
+  BottomSheetFlatList,
+  BottomSheetModal,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet";
+import { useEffect, useMemo, useRef } from "react";
 
 interface NewGenreProps {
   visible: boolean;
@@ -32,6 +38,8 @@ const NewGenreModal = ({
     fetchNextPage,
     hasNextPage,
   } = useGenreHook();
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
+  const snapPoints = useMemo(() => ["70%", "90%"], []);
 
   const toggleGenre = (item: Genre) => {
     const exists = genre.some((g) => g._id === item._id);
@@ -42,13 +50,21 @@ const NewGenreModal = ({
     }
   };
 
+  useEffect(() => {
+    if (visible) {
+      bottomSheetRef.current?.present();
+    } else {
+      bottomSheetRef.current?.dismiss();
+    }
+  }, [visible]);
+
   const renderItem = ({ item }: { item: Genre }) => {
     const isSelected = genre.some((g) => g._id === item._id);
     return (
-      <Pressable onPress={() => toggleGenre(item)} >
+      <Pressable onPress={() => toggleGenre(item)}>
         <ChipItem
           label={item.name}
-          backgroundColor={isSelected ? "#008BBE" : "#e4ba7aff"}
+          backgroundColor={isSelected ? Colors.secondaryButton : Colors.accent}
           size="medium"
         />
       </Pressable>
@@ -58,52 +74,51 @@ const NewGenreModal = ({
   const clearSearch = () => setSearch("");
 
   return (
-    <Modal
-      visible={visible}
-      animationType="slide"
-      presentationStyle="pageSheet"
+    <BottomSheetModal
+      ref={bottomSheetRef}
+      snapPoints={snapPoints}
+      enablePanDownToClose
+      onDismiss={onCancel}
     >
-      <YStack p={20} gap={20}>
-        <YStack ai="flex-end">
-          <Pressable onPress={onCancel}>
-            <X />
-          </Pressable>
-        </YStack>
+      <BottomSheetView>
+        <YStack p={20} gap={20}>
+          <YStack borderWidth={1} borderColor="black" borderRadius={15}>
+            <SearchBar
+              placeholder="Search a genre"
+              value={search}
+              onChangeText={setSearch}
+              onSubmitEditing={() => {}}
+              searchQuery={search}
+              clearSearch={clearSearch}
+            />
+          </YStack>
 
-        <YStack borderWidth={1} borderColor="black" borderRadius={15}>
-          <SearchBar
-            placeholder="Search a genre"
-            value={search}
-            onChangeText={setSearch}
-            onSubmitEditing={() => {}}
-            searchQuery={search}
-            clearSearch={clearSearch}
+          <BottomSheetFlatList
+            data={listGenre}
+            keyExtractor={(item) => item._id}
+            renderItem={renderItem}
+            numColumns={2}
+            contentContainerStyle={{ gap: 10, paddingBottom: 20 }}
+            columnWrapperStyle={{ justifyContent: "center", gap: 10 }}
+            onEndReached={() => {
+              if (hasNextPage) fetchNextPage();
+            }}
+            onEndReachedThreshold={0.5}
+            ListFooterComponent={
+              isLoadingSearchedGenre ? (
+                <Text>Loading more genres...</Text>
+              ) : null
+            }
           />
+
+          <Button onPress={onCancel} backgroundColor={Colors.primaryButton}>
+            <Text color={Colors.fontColor} fontSize={16}>
+              Save
+            </Text>
+          </Button>
         </YStack>
-
-        <FlatList
-          data={listGenre}
-          keyExtractor={(item) => item._id}
-          renderItem={renderItem}
-          numColumns={2}
-          contentContainerStyle={{ gap: 10, paddingBottom: 20 }}
-          columnWrapperStyle={{ justifyContent: "center", gap: 10 }}
-          onEndReached={() => {
-            if (hasNextPage) fetchNextPage();
-          }}
-          onEndReachedThreshold={0.5} 
-          ListFooterComponent={
-            isLoadingSearchedGenre ? (
-              <Text>Loading more genres...</Text>
-            ) : null
-          }
-        />
-
-        <Button onPress={onCancel} backgroundColor={Colors.primaryButton} color={'#fff'} >
-          Confirmar selección
-        </Button>
-      </YStack>
-    </Modal>
+      </BottomSheetView>
+    </BottomSheetModal>
   );
 };
 

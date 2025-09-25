@@ -1,6 +1,6 @@
 import { YStack, ScrollView, Text } from "tamagui";
 import { Colors } from "@/theme-config/colors";
-import { useState } from "react";
+import React, { useState } from "react";
 import Button from "@/theme-config/custom-components";
 import { Author } from "@/models/author.model";
 import { useForm } from "react-hook-form";
@@ -9,12 +9,13 @@ import AuthorForm from "@/components/pages/book/authorForm";
 import { Genre } from "@/models/genre.model";
 import GenreForm from "@/components/pages/book/genreForm";
 import { FormTextArea } from "@/components/formInputs/textAreaInput";
-import {  NewBook } from "@/models/book.model";
+import { NewBook } from "@/models/book.model";
 import { useBookService } from "@/services/book.service";
 import { FormImage } from "@/components/formInputs/imageInput";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { Pressable } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const Page = () => {
   const queryClient = useQueryClient();
@@ -42,7 +43,6 @@ const Page = () => {
   });
 
   const handleSubmitBook = async (data: NewBook) => {
-
     if (!author || genre.length === 0) {
       console.warn("Required fields missing");
       return;
@@ -59,16 +59,15 @@ const Page = () => {
       formData.append("isBought", "false");
       formData.append("isFavorite", "false");
 
-  
-    if (data.imageUrl) {
-      formData.append("imageUrl", {
-        uri: data.imageUrl.fileURL.startsWith("file://")
-          ? data.imageUrl.fileURL
-          : `file://${data.imageUrl.fileURL}`,
-        type: "image/jpeg",
-        name: data.imageUrl.path.split("/").pop() || "book.jpg",
-      } as any);
-    }
+      if (data.imageUrl) {
+        formData.append("imageUrl", {
+          uri: data.imageUrl.fileURL.startsWith("file://")
+            ? data.imageUrl.fileURL
+            : `file://${data.imageUrl.fileURL}`,
+          type: "image/jpeg",
+          name: data.imageUrl.path.split("/").pop() || "book.jpg",
+        } as any);
+      }
 
       const newBook = await createBook(formData);
       console.log("Book created successfully:", newBook);
@@ -80,7 +79,6 @@ const Page = () => {
       reset();
       setAuthor(null);
       setGenre([]);
-  
 
       router.back();
     } catch (err) {
@@ -89,7 +87,16 @@ const Page = () => {
   };
 
   return (
-    <ScrollView backgroundColor={Colors.background}>
+    <KeyboardAwareScrollView
+      enableOnAndroid
+      extraScrollHeight={20}
+      keyboardShouldPersistTaps="handled"
+      contentContainerStyle={{
+        flexGrow: 1,
+        backgroundColor: Colors.background,
+        paddingBottom: 40
+      }}
+    >
       <YStack f={1} p={20} gap={20}>
         <FormInput
           control={control}
@@ -104,11 +111,10 @@ const Page = () => {
         <AuthorForm author={author} setAuthor={setAuthor} />
         <GenreForm genre={genre} setGenre={setGenre} />
         <FormImage
-          control={control} 
-          errors={errors} 
-          name="imageUrl" 
-          label="Book Cover" 
-         
+          control={control}
+          errors={errors}
+          name="imageUrl"
+          label="Book Cover"
         />
         <FormInput
           control={control}
@@ -126,16 +132,19 @@ const Page = () => {
           placeholder="Description..."
           autoCapitalize="sentences"
           label="Description"
+          
         />
 
-        <Pressable
-          style={{ backgroundColor: "red" }}
+        <Button
+          backgroundColor={Colors.primaryButton}
           onPress={handleSubmit(handleSubmitBook)}
         >
-          <Text fontSize={25}>Add book</Text>
-        </Pressable>
+          <Text fontSize={25} color={Colors.fontColor}>
+            Add book
+          </Text>
+        </Button>
       </YStack>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 

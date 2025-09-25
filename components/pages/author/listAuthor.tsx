@@ -12,6 +12,7 @@ import ChipItem from "@/components/ui/chip";
 import { useRouter } from "expo-router";
 import { useAuthorHook } from "@/hooks/useAuthorPage";
 import { Author } from "@/models/author.model";
+import { FlashList } from "@shopify/flash-list";
 
 const ListAuthor = () => {
   const {
@@ -65,13 +66,14 @@ const ListAuthor = () => {
         />
       </YStack>
 
-      <FlatList
+      <FlashList
         data={listAuthor}
         keyExtractor={(item) => item._id}
+        estimatedItemSize={200}
         renderItem={renderItem}
         numColumns={2}
-        contentContainerStyle={{ gap: 10, paddingBottom: 20 }}
-        columnWrapperStyle={{ justifyContent: "center", gap: 10 }}
+        contentContainerStyle={{ paddingBottom: 20 }}
+        //columnWrapperStyle={{ justifyContent: "center", gap: 10 }}
         onEndReached={() => {
           if (hasNextPage) fetchNextPage();
         }}

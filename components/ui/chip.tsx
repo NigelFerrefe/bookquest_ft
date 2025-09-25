@@ -32,11 +32,11 @@ const ChipItem = ({
 
   switch (size) {
     case "small":
-      paddingHorizontal = 10;
-      paddingVertical = 5;
-      borderRadius = 15;
+      paddingHorizontal = 12;
+      paddingVertical = 6;
+      borderRadius = 12;
       gap = 5;
-      fontSize = 12;
+      fontSize = 13;
       break;
     case "large":
       paddingHorizontal = 30;

@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "bookquest_ft",
+    "name": "BookQuest",
     "slug": "bookquest_ft",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -9,7 +9,7 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/images/splash-icon.png",
+      "image": "./assets/images/BookPlaceholder.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -21,10 +21,11 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/BookPlaceholder.png.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.nferrefe.bookquest_ft"
     },
     "web": {
       "bundler": "metro",
@@ -39,7 +40,11 @@
       "typedRoutes": true
     },
     "extra": {
-      "API_URL": "https://bookquest-bk.vercel.app/"
+      "API_URL": "https://bookquest-bk.vercel.app/",
+      "router": {},
+      "eas": {
+        "projectId": "e3b957e0-27ac-4bc5-95cf-5e0f96e16cd8"
+      }
     }
   }
 }

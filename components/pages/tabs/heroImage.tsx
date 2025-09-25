@@ -1,20 +1,21 @@
 import { ImageBackground } from "react-native";
-import React, { useState } from "react";
 import { YStack, Text } from "tamagui";
 import Button from "@/theme-config/custom-components";
 import { Text as AlmendraText } from "react-native";
-import NewAuthor from "@/components/ui/authorModal";
 import { useRouter } from "expo-router";
+import { Colors } from "@/theme-config/colors";
+import { useState } from "react";
 
 const HeroImage = () => {
   const router = useRouter();
+  const [pressed, setPressed] = useState<boolean>(false);
   return (
-    <YStack gap={20} alignItems="center">
+    <YStack gap={20} alignItems="center" >
       <AlmendraText
         style={{
           fontFamily: "AlmendraBold",
-          fontSize: 36,
-          textAlign: "center"
+          fontSize: 30,
+          textAlign: "center",
         }}
       >
         What's your new BookQuest?
@@ -29,20 +30,21 @@ const HeroImage = () => {
           overflow: "hidden",
           justifyContent: "center",
           alignItems: "center",
+          
         }}
       >
         <Button
-          backgroundColor="#2E3B76"
-          color="#fff"
-          borderRadius={8}
-          paddingHorizontal="$4"
-          paddingVertical="$2"
-          pressStyle={{
-            backgroundColor: "#34281eff",
-          }}
+          backgroundColor={Colors.primaryButton}
+          
           onPress={() => router.navigate("/(pages)/book/main/newBook")}
+          pressStyle={{
+            backgroundColor: Colors.secondaryButton,
+            borderColor: Colors.background,
+          }}
+          onPressIn={() => setPressed(true)}
+          onPressOut={() => setPressed(false)}
         >
-          Add book
+          <Text color={Colors.fontColor} fontSize={16}>Add book</Text>
         </Button>
       </ImageBackground>
     </YStack>

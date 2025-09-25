@@ -28,7 +28,7 @@ const ListGenre = () => {
 
   const renderItem = ({ item }: { item: Genre }) => {
     return (
-      <XStack f={1} jc='center'  mb={10} paddingHorizontal={10} >
+      <XStack f={1} jc="center" mb={10} paddingHorizontal={10}>
         <Pressable
           onPress={() => {
             router.navigate({
@@ -67,6 +67,7 @@ const ListGenre = () => {
       <FlashList
         data={listGenre}
         keyExtractor={(item) => item._id}
+        estimatedItemSize={200}
         renderItem={renderItem}
         numColumns={2}
         contentContainerStyle={{ paddingBottom: 20 }}

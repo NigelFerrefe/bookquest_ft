@@ -38,7 +38,7 @@ export const FormImage = ({
         }}
         render={({ field: { onChange, value: fieldValue } }) => (
           <ImagePickerComponent
-            value={fieldValue ?? value} 
+            value={fieldValue} 
             onChangeText={(picked: { fileURL: string; path: string }) => {
               onChange(picked); 
             }}

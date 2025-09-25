@@ -1,10 +1,17 @@
-import { FlatList, Modal, Pressable } from "react-native";
+import React, { useRef, useMemo, useEffect } from "react";
+import { FlatList, Pressable } from "react-native";
 import { YStack, Text } from "tamagui";
-import { useAuthorHook } from "@/hooks/useAuthorPage";
+import {
+  BottomSheetFlatList,
+  BottomSheetModal,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet";
 import { X } from "@tamagui/lucide-icons";
 import SearchBar from "./searchBar";
-import { Author } from "@/models/author.model";
 import ChipItem from "./chip";
+import { Author } from "@/models/author.model";
+import { useAuthorHook } from "@/hooks/useAuthorPage";
+import { Colors } from "@/theme-config/colors";
 
 interface NewAuthorProps {
   visible: boolean;
@@ -13,24 +20,45 @@ interface NewAuthorProps {
   setAuthor: (a: Author) => void;
 }
 
-const NewAuthorModal = ({ visible, onCancel, author, setAuthor }: NewAuthorProps) => {
+const NewAuthorModal = ({
+  visible,
+  onCancel,
+  author,
+  setAuthor,
+}: NewAuthorProps) => {
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
+
   const {
     listAuthor,
     search,
     setSearch,
-    isLoadingSearchedAuthor,
     hasNextPage,
     fetchNextPage,
+    isLoadingSearchedAuthor,
   } = useAuthorHook();
 
+  const snapPoints = useMemo(() => ["50%", "90%"], []);
+
+  useEffect(() => {
+    if (visible) {
+      bottomSheetRef.current?.present();
+    } else {
+      bottomSheetRef.current?.dismiss();
+    }
+  }, [visible]);
+
   const renderItem = ({ item }: { item: Author }) => (
-    <Pressable onPress={() => {
-      setAuthor(item);
-      onCancel(); 
-    }}>
+    <Pressable
+      onPress={() => {
+        setAuthor(item);
+        onCancel();
+      }}
+    >
       <ChipItem
         label={item.name}
-        backgroundColor={author?._id === item._id ? "#008BBE" : "#e4ba7aff"}
+        backgroundColor={
+          author?._id === item._id ? Colors.secondaryButton : Colors.accent
+        }
         size="medium"
       />
     </Pressable>
@@ -39,39 +67,45 @@ const NewAuthorModal = ({ visible, onCancel, author, setAuthor }: NewAuthorProps
   const clearSearch = () => setSearch("");
 
   return (
-    <Modal
-      visible={visible}
-      animationType="slide"
-      presentationStyle="pageSheet"
+    <BottomSheetModal
+      ref={bottomSheetRef}
+      snapPoints={snapPoints}
+      enablePanDownToClose
+      onDismiss={onCancel}
     >
-      <YStack p={20} gap={20}>
-        <YStack ai="flex-end">
-          <Pressable onPress={onCancel}>
-            <X />
-          </Pressable>
-        </YStack>
+      <BottomSheetView>
+        <YStack p={20} gap={20}>
+          <YStack borderWidth={1} borderColor="black" borderRadius={15}>
+            <SearchBar
+              placeholder="Search an author"
+              value={search}
+              onChangeText={setSearch}
+              onSubmitEditing={() => {}}
+              searchQuery={search}
+              clearSearch={clearSearch}
+            />
+          </YStack>
 
-        <YStack borderWidth={1} borderColor="black" borderRadius={15}>
-          <SearchBar
-            placeholder="Search an author"
-            value={search}
-            onChangeText={setSearch}
-            onSubmitEditing={() => {}} 
-            searchQuery={search}
-            clearSearch={clearSearch}
+          <BottomSheetFlatList
+            data={listAuthor}
+            keyExtractor={(item) => item._id}
+            renderItem={renderItem}
+            numColumns={2}
+            contentContainerStyle={{ gap: 10, paddingBottom: 20 }}
+            columnWrapperStyle={{ justifyContent: "center", gap: 10 }}
+            onEndReached={() => {
+              if (hasNextPage) fetchNextPage();
+            }}
+            onEndReachedThreshold={0.5}
+            ListFooterComponent={
+              isLoadingSearchedAuthor ? (
+                <Text>Loading more genres...</Text>
+              ) : null
+            }
           />
         </YStack>
-
-        <FlatList
-          data={listAuthor}
-          keyExtractor={(item) => item._id}
-          renderItem={renderItem}
-          numColumns={2}
-          contentContainerStyle={{ gap: 10, paddingBottom: 20 }}
-          columnWrapperStyle={{ justifyContent: "center", gap: 10 }}
-        />
-      </YStack>
-    </Modal>
+      </BottomSheetView>
+    </BottomSheetModal>
   );
 };
 

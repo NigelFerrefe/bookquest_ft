@@ -18,6 +18,7 @@ export default function MainLayout() {
         options={{
           headerTitle: "Quest Log",
           headerStyle: { backgroundColor: Colors.background },
+          
         }}
       />
       <Stack.Screen

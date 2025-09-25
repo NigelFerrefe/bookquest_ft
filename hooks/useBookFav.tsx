@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Books } from "@/models/book.model";
 import { useBookService } from "@/services/book.service";
+import { invalidateBookLists } from "@/utils/invalidateQueries";
 
 export function useBookFav(book?: Books) {
   const queryClient = useQueryClient();
@@ -36,9 +37,12 @@ export function useBookFav(book?: Books) {
         console.error(err);
         if (context?.previousBook) setIsFav(context.previousBook.isFavorite);
       },
-      onSettled: () => {
-        if (book)
-          queryClient.invalidateQueries({ queryKey: ["book", book._id] });
+      onSettled: async (updatedBook?: Books) => {
+        if (!book) return;
+
+        queryClient.invalidateQueries({ queryKey: ["book", book._id] });
+
+        invalidateBookLists(queryClient);
       },
     }
   );

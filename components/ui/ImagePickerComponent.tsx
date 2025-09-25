@@ -122,7 +122,6 @@ export const ImagePickerComponent = forwardRef<
 });
  */
 
-
 import { Plus, Undo2 } from "@tamagui/lucide-icons";
 import * as ImageManipulator from "expo-image-manipulator";
 import { forwardRef, useCallback, useEffect, useState } from "react";
@@ -207,10 +206,10 @@ export const ImagePickerComponent = forwardRef<
   const handleOpenOptions = () => {
     if (disabled) return;
 
-    Alert.alert("Seleccionar imagen", "¿De dónde quieres elegir la foto?", [
-      { text: "Cámara", onPress: cameraPicker.open },
-      { text: "Galería", onPress: filePicker.open },
-      { text: "Cancelar", style: "cancel" },
+    Alert.alert("Select image", "Where do you want to choose the photo from?", [
+      { text: "Camera", onPress: cameraPicker.open },
+      { text: "Gallery", onPress: filePicker.open },
+      { text: "Cancel", style: "cancel" },
     ]);
   };
 
@@ -237,7 +236,12 @@ export const ImagePickerComponent = forwardRef<
       onLayout={onLayout}
     >
       {image ? (
-        <View width="100%" height="100%" justifyContent="center" alignItems="center">
+        <View
+          width="100%"
+          height="100%"
+          justifyContent="center"
+          alignItems="center"
+        >
           <Image
             borderRadius={8}
             width="100%"
@@ -267,7 +271,12 @@ export const ImagePickerComponent = forwardRef<
           onPress={handleOpenOptions}
           backgroundColor="transparent"
         >
-          <View width="100%" height="100%" justifyContent="center" alignItems="center">
+          <View
+            width="100%"
+            height="100%"
+            justifyContent="center"
+            alignItems="center"
+          >
             <Plus color="white" size={containerSize * 0.3} />
           </View>
         </Button>

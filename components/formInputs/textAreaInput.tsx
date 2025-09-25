@@ -2,6 +2,7 @@ import { Controller } from "react-hook-form";
 import { TextInput, KeyboardTypeOptions } from "react-native";
 import { useState } from "react";
 import { Text, YStack, XStack } from "tamagui";
+import { Colors } from "@/theme-config/colors";
 
 type TextAreaProps = {
   control: any;
@@ -24,14 +25,14 @@ export const FormTextArea = ({
   required = false,
   keyboardType = 'default',
   autoCapitalize = 'sentences',
-  numberOfLines = 4,
+  numberOfLines = 10,
 }: TextAreaProps) => {
   const [focused, setFocused] = useState(false);
 
   return (
-    <YStack gap={4}>
+    <YStack gap={4}  w='100%'>
       {label && (
-        <XStack gap={2} alignItems="center">
+        <XStack gap={2}>
           <Text fontWeight="700">{label}</Text>
           {required && <Text fontSize={12} color="#a70117a4">*</Text>}
         </XStack>
@@ -60,13 +61,14 @@ export const FormTextArea = ({
                 borderColor: errors[name]
                   ? '#a70117a4'
                   : focused
-                  ? '#2E3B76'
-                  : '#ccc',
+                  ? Colors.primaryButton
+                  : Colors.inactiveTintColor,
                 borderWidth: 1,
                 padding: 10,
                 borderRadius: 5,
-                textAlignVertical: 'top', // para que el texto empiece arriba
-                minHeight: numberOfLines * 20, // altura mínima aproximada
+                textAlignVertical: 'top', 
+                minHeight: numberOfLines * 20, 
+                width: '100%',
               }}
             />
             {errors[name] && (

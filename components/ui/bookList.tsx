@@ -7,6 +7,8 @@ import Card from "@/components/ui/card";
 import Button from "@/theme-config/custom-components";
 import { Text as AlmendraText, Pressable } from "react-native";
 import { useRouter } from "expo-router";
+import { Colors } from "@/theme-config/colors";
+import { ArrowRight } from "@tamagui/lucide-icons";
 
 type BooksListScreenProps = {
   data: Books[];
@@ -31,53 +33,65 @@ const BooksListScreen = ({
 }: BooksListScreenProps) => {
   const renderItem = ({ item }: { item: Books }) => {
     const router = useRouter();
-      const bookPlaceholder = require('@/assets/images/BookPlaceholder.png')
+    const bookPlaceholder = require("@/assets/images/BookPlaceholder.png");
 
     return (
       <YStack ai="center">
         <Card>
-          <Pressable
-            onPress={() => {
-              router.navigate({
-                pathname: "/(pages)/book/main/[id]",
-                params: {
-                  id: item._id,
-                },
-              });
-            }}
-          >
-            <Card.Header>
-              <AlmendraText
-                style={{
-                  fontFamily: "Almendra",
-                  fontSize: 36,
-                  textAlign: "center",
-                  fontStyle: "italic",
-                  color: "#2E3B76",
-                }}
-              >
-                {item.title}
-              </AlmendraText>
-              <Text fontSize={18}>{item?.author.name}</Text>
-            </Card.Header>
-          </Pressable>
-          <Card.Body>
+          <Card.Header>
             <Image
               source={item.imageUrl ? { uri: item.imageUrl } : bookPlaceholder}
               w={280}
               h={300}
               objectFit="contain"
             />
+          </Card.Header>
+
+          <Card.Body>
+            <YStack gap={10} ai={"center"}>
+              <AlmendraText
+                style={{
+                  fontFamily: "Almendra",
+                  fontSize: 28,
+                  textAlign: "center",
+                  fontStyle: "italic",
+                  color: Colors.accent,
+                }}
+              >
+                {item.title}
+              </AlmendraText>
+              <Text fontSize={18}>{item?.author.name}</Text>
+            </YStack>
             <XStack flexWrap="wrap" gap="$2" jc="center" paddingVertical={20}>
               {item.genre?.map((g) => (
                 <ChipItem
                   key={g._id}
                   label={g.name}
-                  backgroundColor="#008BBE"
+                  backgroundColor={Colors.accent}
                   size="small"
                 />
               ))}
             </XStack>
+            <YStack paddingHorizontal={20}>
+              <Button
+                backgroundColor={Colors.primaryButton}
+                onPress={() => {
+                  router.navigate({
+                    pathname: "/(pages)/book/main/[id]",
+                    params: {
+                      id: item?._id ?? "",
+                    },
+                  });
+                }}
+              >
+                <XStack ai={"center"} gap={20}>
+                  <Text color={Colors.fontColor} fontSize={16}>
+                    Inspect
+                  </Text>
+                  <ArrowRight color={Colors.fontColor} size={20} />
+                </XStack>
+              </Button>
+            </YStack>
           </Card.Body>
         </Card>
       </YStack>
@@ -154,3 +168,13 @@ const BooksListScreen = ({
 };
 
 export default BooksListScreen;
+
+{
+  /**
+  
+
+  
+
+
+  */
+}

@@ -1,11 +1,14 @@
 import { createInterFont } from "@tamagui/font-inter";
 import { getVariableValue, createFont } from "tamagui";
+
+// ===============================
+// Heading font
+// ===============================
 const headingSize = {
   1: 11,
   2: 12,
   3: 13,
   4: 14,
-  true: 14,
   5: 16,
   6: 18,
   7: 20,
@@ -19,36 +22,34 @@ const headingSize = {
   15: 114,
   16: 134,
   sm: 12,
-  md: 14,
-  lg: 16,
+  md: 16,
+  lg: 20,
+  true: 16, // fallback
 };
 
-export const headingFont = createInterFont(
-  {
-    transform: {
-      6: "uppercase",
-      7: "none",
-    },
-    weight: {
-      3: "500",
-      4: "700",
-    },
-    face: {
-      700: { normal: "InterBold" },
-    },
-    size: Object.fromEntries(
-      Object.entries(headingSize).map(([k, v]) => [k, getVariableValue(v)])
-    ),
-    lineHeight: Object.fromEntries(
-      Object.entries(headingSize).map(([k, v]) => [k, getVariableValue(v) + 4])
-    ),
-  }
-  /*{
-    sizeSize: (size) => size,
-    sizeLineHeight: (fontSize) => fontSize + 4,
-  }*/
-);
+export const headingFont = createInterFont({
+  transform: {
+    6: "uppercase",
+    7: "none",
+  },
+  weight: {
+    3: "500",
+    4: "700",
+  },
+  face: {
+    700: { normal: "InterBold" },
+  },
+  size: Object.fromEntries(
+    Object.entries(headingSize).map(([k, v]) => [k, getVariableValue(v)])
+  ),
+  lineHeight: Object.fromEntries(
+    Object.entries(headingSize).map(([k, v]) => [k, getVariableValue(v) + 4])
+  ),
+});
 
+// ===============================
+// Body font
+// ===============================
 const bodySize = {
   1: 11,
   2: 12,
@@ -66,32 +67,27 @@ const bodySize = {
   14: 92,
   15: 114,
   16: 134,
-
+  sm: 12,
+  md: 16,
+  lg: 20,
+  true: 16, // fallback
 };
 
-export const bodyFont = createInterFont(
-  {
-    face: {
-      700: { normal: "InterBold" },
-    },
-    size: Object.fromEntries(
-      Object.entries(bodySize).map(([k, v]) => [k, getVariableValue(v) * 1.2])
-    ),
-    lineHeight: Object.fromEntries(
-      Object.entries(headingSize).map(([k, v]) => [k, getVariableValue(v) + 5])
-    ),
-  }
-  /*{
-    sizeSize: (size) => Math.round(size * 1.1),
-    sizeLineHeight: (size) => size + 5,
-  }*/
-);
+export const bodyFont = createInterFont({
+  face: {
+    700: { normal: "InterBold" },
+  },
+  size: Object.fromEntries(
+    Object.entries(bodySize).map(([k, v]) => [k, getVariableValue(v) * 1.2])
+  ),
+  lineHeight: Object.fromEntries(
+    Object.entries(bodySize).map(([k, v]) => [k, getVariableValue(v) + 5])
+  ),
+});
 
-
-
-
+// ===============================
 // Jersey font
-
+// ===============================
 const pixelSizes = {
   11: 11,
   12: 12,
@@ -110,6 +106,10 @@ const pixelSizes = {
   92: 92,
   114: 114,
   134: 134,
+  sm: 12,
+  md: 16,
+  lg: 20,
+  true: 16, // fallback
 };
 
 export const jerseyFont = createFont({

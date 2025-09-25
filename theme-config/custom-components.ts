@@ -4,7 +4,6 @@ import { getSpace } from "@tamagui/get-token";
 import { Button as TamaguiButton } from "tamagui";
 import { headingFont } from "./fonts";
 
-
 const Button = styled(TamaguiButton, {
   variants: {
     size: {

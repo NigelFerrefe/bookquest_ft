@@ -26,11 +26,11 @@ const EditMainScreen = ({ id }: { id: string }) => {
   });
   return (
       <YStack p={20} f={1} gap={20} backgroundColor={Colors.background}>
-        <EditTittleScreen title={book?.title || ""} />
-        <EditAuthorScreen author={book?.author?.name || ""} />
-        <EditCostScreen price={book?.price || 0} />
-        <EditClassScreen classes={book?.genre?.map((g) => g.name) || []} />
-        <EditDetailsScreen description={book?.description || ""} />
+        <EditTittleScreen id={book?._id || ''} title={book?.title || ""} />
+        <EditAuthorScreen id={book?._id || ''}  author={book?.author || null } />
+        <EditCostScreen id={book?._id || ''} price={book?.price || 0} />
+        <EditClassScreen id={book?._id || ''} classes={book?.genre || []} />
+        <EditDetailsScreen id={book?._id || ''} description={book?.description || ""} />
       </YStack>
   );
 };

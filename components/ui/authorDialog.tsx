@@ -1,14 +1,14 @@
-import { Dialog, Button } from "tamagui";
-//import Button from "@/theme-config/custom-components";
+import { Dialog, Text } from "tamagui";
+import Button from "@/theme-config/custom-components";
 import { FormInput } from "@/components/formInputs/textInput";
 import { Colors } from "@/theme-config/colors";
 
 interface AuthorDialogProps {
   visible: boolean;
   onCancel: () => void;
-  control: any; 
+  control: any;
   errors: any;
-  onSubmit: () => void; 
+  onSubmit: () => void;
 }
 
 const AuthorDialog = ({
@@ -49,16 +49,29 @@ const AuthorDialog = ({
             name="authorName"
             placeholder="Author..."
             autoCapitalize="words"
-            
           />
- 
-          <Button size="$sm" width="100%" onPress={onSubmit} backgroundColor={Colors.primaryButton} color={'white'}>
-            Create author
+
+          <Button
+            size="$sm"
+            width="100%"
+            onPress={onSubmit}
+            backgroundColor={Colors.primaryButton}
+          >
+            <Text color={Colors.fontColor} fontSize={16}>
+              Create author
+            </Text>
           </Button>
 
           <Dialog.Close asChild>
-            <Button  borderColor={Colors.primaryButton} size="$sm" width="100%">
-              Cancel
+            <Button
+              backgroundColor={Colors.danger}
+              borderColor={Colors.primaryButton}
+              size="$sm"
+              width="100%"
+            >
+              <Text color={Colors.fontColor} fontSize={16}>
+                Cancel
+              </Text>
             </Button>
           </Dialog.Close>
         </Dialog.Content>

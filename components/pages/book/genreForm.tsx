@@ -6,7 +6,9 @@ import { Genre } from "@/models/genre.model";
 import GenreDialog from "@/components/ui/genreDialog";
 import NewGenreModal from "@/components/ui/genreModal";
 import { useGenreService } from "@/services/genre.service";
-
+import { Colors } from "@/theme-config/colors";
+import { Trash2 } from "@tamagui/lucide-icons";
+import { Pressable } from "react-native";
 type FormValues = {
   genreNames: string;
 };
@@ -61,7 +63,9 @@ const GenreForm = ({ genre, setGenre }: GenreFormProps) => {
         </XStack>
         <YStack
           borderWidth={1}
-          borderColor={genre.length > 0 ? "#2E3B76" : "#ccc"}
+          borderColor={
+            genre.length ? Colors.primaryButton : Colors.inactiveTintColor
+          }
           paddingHorizontal={10}
           paddingVertical={12}
           borderRadius={5}
@@ -76,20 +80,27 @@ const GenreForm = ({ genre, setGenre }: GenreFormProps) => {
         </YStack>
       </XStack>
 
-      <XStack gap={10} paddingHorizontal={20} jc="space-between" ai="center">
+      <XStack gap={20} justifyContent="center" ai="center">
         <Button
           onPress={() => setShowGenreDialog(true)}
-          backgroundColor="green"
+          backgroundColor={Colors.secondaryButton}
+          borderColor={Colors.primaryButton}
+          size={"$sm"}
         >
           New genre
         </Button>
-        <Button onPress={() => setShowGenreModal(true)} backgroundColor="red">
+        <Button
+          onPress={() => setShowGenreModal(true)}
+          backgroundColor={Colors.secondaryButton}
+          borderColor={Colors.primaryButton}
+          size={"$sm"}
+        >
           Select from list
         </Button>
         {genre.length > 0 && (
-          <Button backgroundColor="#666" onPress={() => setGenre([])}>
-            Clear
-          </Button>
+          <Pressable onPress={() => setGenre([])}>
+            <Trash2 color={Colors.danger} />
+          </Pressable>
         )}
       </XStack>
       {showGenreDialog && (

@@ -2,6 +2,7 @@ import { Controller } from "react-hook-form";
 import { TextInput, KeyboardTypeOptions } from "react-native";
 import { useState } from "react";
 import { Text, XStack } from "tamagui";
+import { Colors } from "@/theme-config/colors";
 
 type InputProps = {
   control: any;
@@ -73,19 +74,19 @@ export const FormInput = ({
         control={control}
         name={name}
         rules={{
-          required: required ? "Este campo es obligatorio" : false,
+          required: required ? "This field is required" : false,
           validate: (value: string) => {
             if (!value) return true;
             if (
               (type === "number" || type === "price") &&
               isNaN(Number(value))
             ) {
-              return "Debe ser un número válido";
+              return "Must be a valid number";
             }
             if (min !== undefined && Number(value) < min)
-              return `Mínimo ${min}`;
+              return `Min ${min}`;
             if (max !== undefined && Number(value) > max)
-              return `Máximo ${max}`;
+              return `Max ${max}`;
             return true;
           },
         }}
@@ -107,8 +108,8 @@ export const FormInput = ({
                 borderColor: errors[name]
                   ? "#a70117a4"
                   : focused
-                  ? "#2E3B76"
-                  : "#ccc",
+                  ? Colors.primaryButton
+                  : Colors.inactiveTintColor,
                 borderWidth: 1,
                 padding: 10,
                 borderRadius: 5,

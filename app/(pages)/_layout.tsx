@@ -15,7 +15,7 @@ const PagesLayout = () => {
       }}
     >
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="book" options={{ headerShown: false }} />
+
       <Stack.Screen
         name="genre/[id]"
         options={{

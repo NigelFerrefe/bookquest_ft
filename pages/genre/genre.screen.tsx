@@ -13,13 +13,13 @@ import { useRouter } from "expo-router";
 import ListGenre from "@/components/pages/genre/listGenre";
 import ListAuthor from "@/components/pages/author/listAuthor";
 
-const GenreScreen = () => {
+const ExploreScreen = () => {
   return (
     <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false}>
       <AlmendraText
         style={{
           fontFamily: "AlmendraBold",
-          fontSize: 36,
+          fontSize: 30,
           textAlign: "center",
         }}
       >
@@ -31,4 +31,4 @@ const GenreScreen = () => {
   );
 };
 
-export default GenreScreen;
+export default ExploreScreen;

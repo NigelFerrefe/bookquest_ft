@@ -7,6 +7,9 @@ import { TamaguiProvider, PortalProvider } from "tamagui";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Almendra_400Regular } from "@expo-google-fonts/almendra/400Regular";
 import { Almendra_700Bold } from "@expo-google-fonts/almendra/700Bold";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+
 SplashScreen.preventAutoHideAsync();
 const queryClient = new QueryClient();
 const Routes = () => {
@@ -50,14 +53,18 @@ export default () => {
   }
 
   return (
-    <TamaguiProvider config={tamaguiConfig}>
-      <PortalProvider>
-        <QueryClientProvider client={queryClient}>
-          <AuthProvider>
-            <Routes />
-          </AuthProvider>
-        </QueryClientProvider>
-      </PortalProvider>
-    </TamaguiProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <TamaguiProvider config={tamaguiConfig}>
+        <PortalProvider>
+          <BottomSheetModalProvider>
+            <QueryClientProvider client={queryClient}>
+              <AuthProvider>
+                <Routes />
+              </AuthProvider>
+            </QueryClientProvider>
+          </BottomSheetModalProvider>
+        </PortalProvider>
+      </TamaguiProvider>
+    </GestureHandlerRootView>
   );
 };

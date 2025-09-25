@@ -1,4 +1,4 @@
-import { Dialog } from "tamagui";
+import { Dialog, Text, YStack } from "tamagui";
 import Button from "@/theme-config/custom-components";
 import { FormInput } from "@/components/formInputs/textInput";
 import { Colors } from "@/theme-config/colors";
@@ -57,7 +57,7 @@ const GenreDialog = ({
           <Dialog.Title fontSize={30} textAlign="center">
             Set new genres!
           </Dialog.Title>
-
+          <YStack gap={5}>
           <FormInput
             control={control}
             errors={errors}
@@ -65,20 +65,33 @@ const GenreDialog = ({
             placeholder="Genre..."
             autoCapitalize="words"
           />
-
+          <YStack paddingHorizontal={10}>
+          <Text fontSize={10} color="#666" >
+            Each genre must be separated by a comma.
+          </Text>
+          </YStack>
+          </YStack>
           <Button
             size="$sm"
             width="100%"
             onPress={handleSubmit(handleSubmitGenres)}
             backgroundColor={Colors.primaryButton}
-            color={"white"}
           >
-            Create genres
+            <Text color={Colors.fontColor} fontSize={16}>
+              Create genres
+            </Text>
           </Button>
 
           <Dialog.Close asChild>
-            <Button borderColor={Colors.primaryButton} size="$sm" width="100%">
-              Cancel
+            <Button
+              backgroundColor={Colors.danger}
+              borderColor={Colors.primaryButton}
+              size="$sm"
+              width="100%"
+            >
+              <Text color={Colors.fontColor} fontSize={16}>
+                Cancel
+              </Text>
             </Button>
           </Dialog.Close>
         </Dialog.Content>

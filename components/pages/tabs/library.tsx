@@ -33,7 +33,7 @@ const Library = () => {
       <AlmendraText
         style={{
           fontFamily: "AlmendraBold",
-          fontSize: 36,
+          fontSize: 30,
           textAlign: "center",
         }}
       >

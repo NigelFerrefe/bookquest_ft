@@ -29,9 +29,9 @@ export default function TabLayout() {
             paddingTop: 10,
           },
           default: {
-            backgroundColor: Colors.background,
-            height: 70,
-            paddingTop: 10,
+            backgroundColor: Colors.primaryButton,
+            height: 80,
+            paddingTop: 20,
             borderTopWidth: 0,
             elevation: 0,
           },

@@ -2,6 +2,7 @@ import { Stack } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { YStack, Text, Button, XStack } from 'tamagui'
+import { Colors } from "@/theme-config/colors";
 
 export default function AuthLayout() {
   const router = useRouter();
@@ -9,6 +10,7 @@ export default function AuthLayout() {
     <Stack
       screenOptions={{
         headerShown: false,
+        contentStyle: {backgroundColor: Colors.background}
       }}
       
     >
