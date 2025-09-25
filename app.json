@@ -21,7 +21,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/BookPlaceholder.png.png",
+        "foregroundImage": "./assets/images/BookPlaceholder.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
