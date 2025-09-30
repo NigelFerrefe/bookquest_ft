@@ -11,16 +11,16 @@ const HomeScreen = () => {
   const [openSettings, setOpenSettings] = useState<boolean>(false);
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} >
+    <ScrollView showsVerticalScrollIndicator={false}>
       <YStack ai="flex-end" paddingHorizontal={10} paddingVertical={5}>
         <Pressable onPress={() => setOpenSettings(true)}>
           <Settings size={24} />
         </Pressable>
       </YStack>
       <YStack paddingHorizontal={20}>
-      <HeroImage />
-      <FirstWishlist />
-</YStack>
+        <HeroImage />
+        <FirstWishlist />
+      </YStack>
       <SettingsDialog
         visible={openSettings}
         onCancel={() => setOpenSettings(false)}

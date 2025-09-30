@@ -37,6 +37,7 @@ const ListAuthor = () => {
               pathname: "/(pages)/author/[id]",
               params: {
                 id: item?._id ?? "",
+                name: item.name ?? ''
               },
             });
           }}
@@ -54,7 +55,7 @@ const ListAuthor = () => {
 
   const clearSearch = () => setSearch("");
   return (
-    <YStack f={1} p={20} gap={20}>
+    <YStack  p={20} gap={20}>
       <YStack>
         <SearchBar
           placeholder="Search an author"
@@ -74,6 +75,7 @@ const ListAuthor = () => {
         numColumns={2}
         contentContainerStyle={{ paddingBottom: 20 }}
         //columnWrapperStyle={{ justifyContent: "center", gap: 10 }}
+        keyboardShouldPersistTaps="handled"
         onEndReached={() => {
           if (hasNextPage) fetchNextPage();
         }}

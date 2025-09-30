@@ -139,7 +139,7 @@ const Page = () => {
           backgroundColor={Colors.primaryButton}
           onPress={handleSubmit(handleSubmitBook)}
         >
-          <Text fontSize={25} color={Colors.fontColor}>
+          <Text fontSize={20} color={Colors.fontColor}>
             Add book
           </Text>
         </Button>

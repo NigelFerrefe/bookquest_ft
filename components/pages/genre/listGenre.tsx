@@ -35,6 +35,7 @@ const ListGenre = () => {
               pathname: "/(pages)/genre/[id]",
               params: {
                 id: item?._id ?? "",
+                name: item.name ?? "",
               },
             });
           }}
@@ -52,7 +53,7 @@ const ListGenre = () => {
 
   const clearSearch = () => setSearch("");
   return (
-    <YStack f={1} p={20} gap={20}>
+    <YStack p={20} gap={20}>
       <YStack>
         <SearchBar
           placeholder="Search a genre"
@@ -80,6 +81,7 @@ const ListGenre = () => {
           isLoadingSearchedGenre ? <Text>Loading more genres...</Text> : null
         }
         scrollEnabled={false}
+        keyboardShouldPersistTaps="handled"
       />
     </YStack>
   );

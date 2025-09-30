@@ -36,7 +36,7 @@ export const SettingsDialog = ({ visible, onCancel }: SettingsDialogProps) => {
           gap={15}
         >
           <Button
-            backgroundColor={Colors.alertButton}
+            backgroundColor={Colors.primaryButton}
             onPress={onLogout}
             pressStyle={{
               backgroundColor: Colors.secondaryButton,

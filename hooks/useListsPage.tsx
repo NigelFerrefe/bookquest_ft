@@ -137,11 +137,13 @@ export const usePurchasedHook = () => {
 };
 
 export const useFirstWishlistBook = () => {
-    const {listWishlist } = useWishlistsHook();
+    const {listWishlist, isError, isLoading } = useWishlistsHook();
 
     const firstBook = listWishlist.length > 0 ? listWishlist[0] : null;
 
     return {
-        firstBook
+        firstBook,
+        isError,
+        isLoading
     }
 }

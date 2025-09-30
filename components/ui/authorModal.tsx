@@ -1,5 +1,5 @@
 import React, { useRef, useMemo, useEffect } from "react";
-import { FlatList, Pressable } from "react-native";
+import { FlatList, Keyboard, Pressable } from "react-native";
 import { YStack, Text } from "tamagui";
 import {
   BottomSheetFlatList,
@@ -27,6 +27,7 @@ const NewAuthorModal = ({
   setAuthor,
 }: NewAuthorProps) => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
+  const snapPoints = useMemo(() => ["50%", "90%"], []);
 
   const {
     listAuthor,
@@ -37,8 +38,6 @@ const NewAuthorModal = ({
     isLoadingSearchedAuthor,
   } = useAuthorHook();
 
-  const snapPoints = useMemo(() => ["50%", "90%"], []);
-
   useEffect(() => {
     if (visible) {
       bottomSheetRef.current?.present();
@@ -46,6 +45,20 @@ const NewAuthorModal = ({
       bottomSheetRef.current?.dismiss();
     }
   }, [visible]);
+
+  useEffect(() => {
+    const showSub = Keyboard.addListener("keyboardDidShow", () => {
+      bottomSheetRef.current?.snapToIndex(2);
+    });
+    const hideSub = Keyboard.addListener("keyboardDidHide", () => {
+      bottomSheetRef.current?.snapToIndex(1);
+    });
+
+    return () => {
+      showSub.remove();
+      hideSub.remove();
+    };
+  }, []);
 
   const renderItem = ({ item }: { item: Author }) => (
     <Pressable

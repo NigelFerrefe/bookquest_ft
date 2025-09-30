@@ -1,4 +1,4 @@
-import { FlatList, Modal, Pressable } from "react-native";
+import { FlatList, Keyboard, Modal, Pressable } from "react-native";
 import { YStack, Text } from "tamagui";
 import { X } from "@tamagui/lucide-icons";
 import SearchBar from "./searchBar";
@@ -57,6 +57,20 @@ const NewGenreModal = ({
       bottomSheetRef.current?.dismiss();
     }
   }, [visible]);
+
+    useEffect(() => {
+      const showSub = Keyboard.addListener("keyboardDidShow", () => {
+        bottomSheetRef.current?.snapToIndex(2);
+      });
+      const hideSub = Keyboard.addListener("keyboardDidHide", () => {
+        bottomSheetRef.current?.snapToIndex(1);
+      });
+  
+      return () => {
+        showSub.remove();
+        hideSub.remove();
+      };
+    }, []);
 
   const renderItem = ({ item }: { item: Genre }) => {
     const isSelected = genre.some((g) => g._id === item._id);

@@ -131,7 +131,7 @@ const LoginScreen = () => {
             ai="center"
             zIndex={999}
           >
-            <Spinner size="large" color="#faebe0ff" />
+            <Spinner size="large" color={Colors.accent} />
           </YStack>
         )}
       </KeyboardAwareScrollView>

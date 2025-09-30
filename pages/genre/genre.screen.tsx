@@ -1,21 +1,17 @@
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useGenreHook } from "@/hooks/useGenrePage";
-import { FlatList, Modal, Pressable, Text as AlmendraText } from "react-native";
-import { YStack, Text, ScrollView } from "tamagui";
-import { X } from "@tamagui/lucide-icons";
-
-import { Genre } from "@/models/genre.model";
-import Button from "@/theme-config/custom-components";
-import { Colors } from "@/theme-config/colors";
-import SearchBar from "@/components/ui/searchBar";
-import ChipItem from "@/components/ui/chip";
-import { useRouter } from "expo-router";
+import { Text as AlmendraText, Platform } from "react-native";
 import ListGenre from "@/components/pages/genre/listGenre";
 import ListAuthor from "@/components/pages/author/listAuthor";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const ExploreScreen = () => {
   return (
-    <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false}>
+    <KeyboardAwareScrollView
+      nestedScrollEnabled
+      showsVerticalScrollIndicator={false}
+      enableOnAndroid={true}
+      extraScrollHeight={Platform.OS === "ios" ? 60 : 80}
+      keyboardOpeningTime={0}
+    >
       <AlmendraText
         style={{
           fontFamily: "AlmendraBold",
@@ -27,7 +23,7 @@ const ExploreScreen = () => {
       </AlmendraText>
       <ListGenre />
       <ListAuthor />
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 
