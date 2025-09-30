@@ -44,7 +44,7 @@ const LoginScreen = () => {
       return;
     }
 
-    router.replace("/(pages)/(tabs)/home");
+    router.replace("/(pages)/(tabs)");
   };
 
   return (

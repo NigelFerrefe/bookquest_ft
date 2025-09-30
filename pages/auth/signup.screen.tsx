@@ -39,7 +39,7 @@ const SignupScreen = () => {
       Alert.alert("Registration failed", result.msg);
       console.error("Registration error:", result.msg);
     } else {
-      router.replace("/(pages)/(tabs)/home");
+      router.replace("/(pages)/(tabs)");
     }
   };
 
