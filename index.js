@@ -1,12 +1,11 @@
+import "react-native-gesture-handler";
 import "react-native-reanimated";
-
 import { registerRootComponent } from "expo";
 import { ExpoRoot } from "expo-router";
-import React from "react";
 
-export function App() {
-  const ctx = require.context("./app");
-  return <ExpoRoot context={ctx} />;
+
+export default function App() {
+  return <ExpoRoot />;
 }
 
 registerRootComponent(App);
