@@ -12,27 +12,6 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 SplashScreen.preventAutoHideAsync();
 const queryClient = new QueryClient();
-const Routes = () => {
-  const { authState, loading } = useAuth();
-
-  if (loading) {
-    return null;
-  }
-
-  return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      {authState?.authenticated ? (
-        <Stack.Screen name="(pages)" options={{ headerShown: false }} />
-      ) : (
-        <Stack.Screen name="auth" options={{ headerShown: false }} />
-      )}
-    </Stack>
-  );
-};
 
 export default () => {
   const [fontsLoaded] = useFonts({
@@ -59,7 +38,11 @@ export default () => {
           <BottomSheetModalProvider>
             <QueryClientProvider client={queryClient}>
               <AuthProvider>
-                <Routes />
+                <Stack
+                  screenOptions={{ headerShown: false, animation: "none" }}
+                >
+                  <Stack.Screen name="(pages)" />
+                </Stack>
               </AuthProvider>
             </QueryClientProvider>
           </BottomSheetModalProvider>
